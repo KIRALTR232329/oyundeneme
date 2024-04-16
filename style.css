@@ -1,0 +1,131 @@
+/* Genel Stil Ayarları */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+}
+
+/* Ana Menü Stili */
+#mainMenu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Başlık Stilleri */
+h1, h2 {
+    color: #4CAF50;
+}
+
+/* Menü ve Cevap Butonları */
+.menuButton, .answerButton {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #3fc13f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.menuButton:hover, .answerButton:hover {
+    background-color: #367c39;
+}
+
+/* Geri Bildirim */
+#feedback {
+    margin-top: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Sonraki Soru Butonu */
+#next-question {
+    margin-top: 20px;
+    width: auto;
+    padding: 10px 20px;
+}
+
+
+
+/* Geri Sayım Çemberi */
+#countdown-circle {
+    transform: rotate(0deg);
+    margin-right: 10px;
+}
+
+/* Geri Sayım Metni */
+#countdown-text {
+    transform: rotate(0deg);
+    font-weight: bold;
+}
+
+/* Arkadaşına Sor Butonu Hover */
+#ask-friend:hover {
+    background-color: #FFDF00;
+    border: 2px solid #FFDF00;
+}
+
+/* Doğru Cevap Stili */
+.answerButton.correct {
+    background-color: #4CAF50;
+}
+
+/* Yanlış Cevap Stili */
+.answerButton.wrong {
+    background-color: #FF5733;
+}
+
+/* Hover Stilleri */
+.answerButton:hover {
+    background-color: #367c39;
+}
+
+.answerButton.correct:hover {
+    background-color: #4CAF50;
+}
+
+.answerButton.wrong:hover {
+    background-color: #FF5733;
+}
+
+/* Geri Bildirim Stilleri */
+.feedback.correct {
+    color: #4CAF50;
+}
+
+.feedback.wrong {
+    color: #FF5733;
+}
+
+/* Bilgi Sütunu Tasarımı */
+#info-column {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+}
+
+/* Zamanlayıcıyı ortalamak için */
+#countdown-container {
+    margin-top: 20px; /* Zamanlayıcıyı bilgi sütununun içinde biraz aşağı kaydırın */
+}
