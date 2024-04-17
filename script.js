@@ -1,3 +1,4 @@
+// Sorularınızı bu dizi içinde tanımlayın
 const Questions = [
     {
         soru: "Hücre zarının temel işlevi nedir?",
@@ -30,20 +31,28 @@ let currentQuestionIndex = -1;
 let countdown;
 let timeLeft = 30;
 let isExtended = false;
+let playerScore = 0;
+
+document.getElementById('start-game').addEventListener('click', startGame);
+document.getElementById('restart-game').addEventListener('click', startGame);
 
 function startGame() {
+    currentQuestionIndex = -1;
+    playerScore = 0;
+    document.getElementById('player-score').textContent = '0';
+    document.getElementById('result-container').style.display = 'none';
     document.getElementById('info-column').style.display = 'block';
     showNextQuestion();
+    resetTime();
 }
 
 function showNextQuestion() {
     currentQuestionIndex++;
     if (currentQuestionIndex >= Questions.length) {
-        restartGame();
+        showResult(true, playerScore);
         return;
     }
     const question = Questions[currentQuestionIndex];
-    shuffleAnswers(question.cevaplar); // Şıkları karıştır
     const mainMenu = document.getElementById('mainMenu');
     mainMenu.innerHTML = `<h2>${question.soru}</h2>`;
     question.cevaplar.forEach((answer, i) => {
@@ -63,106 +72,93 @@ function showNextQuestion() {
     nextQuestionButton.style.display = 'none';
     nextQuestionButton.onclick = () => showNextQuestion();
     mainMenu.appendChild(nextQuestionButton);
-    resetTime(); // Her soruda geri sayımı baştan başlat
+    resetTime();
 }
 
 function checkAnswer(selected, correct) {
-    const feedback = document.getElementById('feedback');
     clearInterval(countdown);
-    document.querySelectorAll('.answerButton').forEach(button => button.disabled = true);
+    const answerButtons = document.querySelectorAll('.answerButton');
+    answerButtons.forEach((button, index) => {
+        button.disabled = true; // Tüm butonları devre dışı bırak
+        const isCorrect = String.fromCharCode(65 + index) === correct;
+        if (isCorrect) {
+            button.classList.add('correct'); // Doğru cevabı yeşil yap
+        }
+        if (index === selected && !isCorrect) {
+            button.classList.add('wrong'); // Yanlış seçilen şık kırmızı yap
+        }
+    });
+
+    const feedback = document.getElementById('feedback');
     if (String.fromCharCode(65 + selected) === correct) {
         feedback.textContent = "Doğru!";
         feedback.style.color = "green";
-        const nextQuestionButton = document.getElementById('next-question');
-        nextQuestionButton.style.display = 'block';
-        document.querySelectorAll('.answerButton')[selected].classList.add('correct');
-        updateScore(10);
+        playerScore += 10;
+        document.getElementById('player-score').textContent = playerScore;
+        document.getElementById('next-question').style.display = 'block';
     } else {
-        feedback.textContent = "Yanlış! Oyun bitti.";
+        feedback.textContent = "Yanlış!";
         feedback.style.color = "red";
-        const mainMenu = document.getElementById('mainMenu');
-        const restartButton = document.createElement('button');
-        restartButton.className = 'menuButton';
-        restartButton.textContent = 'Oyunu Yeniden Başlat';
-        restartButton.onclick = () => restartGame();
-        const mainMenuButton = document.createElement('button');
-        mainMenuButton.className = 'menuButton';
-        mainMenuButton.textContent = 'Ana Menü';
-        mainMenuButton.onclick = () => showMainMenu();
-        mainMenu.appendChild(restartButton);
-        mainMenu.appendChild(mainMenuButton);
+        setTimeout(() => showResult(false, playerScore), 2000); // Yanlış cevap verildiğinde 2 saniye sonra sonuç ekranını göster
     }
 }
 
-function updateScore(score) {
-    playerScore += score;
-    document.getElementById('player-score').textContent = playerScore;
-}
 
 function resetTime() {
     clearInterval(countdown);
     timeLeft = 30;
     isExtended = false;
     document.getElementById('ask-friend').disabled = false;
-    startCountdown(); // Geri sayımı başlat
-    updateCountdown(); // Geri sayımı güncelle
+    startCountdown();
 }
 
 function startCountdown() {
-    clearInterval(countdown);
     countdown = setInterval(() => {
-        if (timeLeft !== Infinity) {
+        if (timeLeft > 0) {
             timeLeft--;
             updateCountdown();
-        }
-        if (timeLeft <= 0) {
+        } else {
             clearInterval(countdown);
-            alert("Süre doldu! Oyun bitti.");
-            document.location.reload();
+            showResult(false, playerScore);
         }
     }, 1000);
-}
-
-function extendTime() {
-    if (!isExtended) {
-        timeLeft += 60;
-        isExtended = true;
-        document.getElementById('ask-friend').disabled = true;
-        updateCountdown();
-    }
 }
 
 function updateCountdown() {
     const countdownText = document.getElementById('countdown-text');
     const countdownCircle = document.getElementById('countdown-circle').querySelector('circle');
     countdownText.textContent = timeLeft > 0 ? timeLeft : '';
+    const totalDuration = isExtended ? 90 : 30;
     const circumference = 2 * Math.PI * 45;
-    const offset = circumference - (timeLeft / 30) * circumference;
+    const offset = circumference - (timeLeft / totalDuration) * circumference;
     countdownCircle.style.strokeDashoffset = offset;
 }
 
-function restartGame() {
-    currentQuestionIndex = -1;
-    shuffleQuestions(Questions); // Soruları karıştır
-    showNextQuestion(); // Yeniden başlat
-}
-
-function shuffleAnswers(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+function extendTime() {
+    if (!isExtended) {
+        timeLeft += 30;
+        isExtended = true;
+        document.getElementById('ask-friend').disabled = true;
+        updateCountdown();
     }
 }
 
-function shuffleQuestions(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
+function showResult(isWin, score) {
+    setTimeout(function() {
+        const resultContainer = document.getElementById('result-container');
+        const resultMessage = document.getElementById('result-message');
+        const finalScore = document.getElementById('final-score');
 
-function showMainMenu() {
-    document.location.reload();
-}
+        resultMessage.textContent = isWin ? "Tebrikler, Kazandınız!" : "Üzgünüz, Kaybettiniz!";
+        finalScore.textContent = score;
+        resultContainer.style.display = 'block';
 
-document.getElementById('start-game').addEventListener('click', startGame);
+        document.getElementById('restart-game').onclick = function() {
+            startGame(); // Oyunu yeniden başlat
+        };
+
+        document.getElementById('go-home').onclick = function() {
+            window.location.href = 'index.html'; // Ana sayfaya yönlendir
+        };
+    }, 3000);
+}

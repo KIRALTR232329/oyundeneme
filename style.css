@@ -1,14 +1,15 @@
-/* Genel Stil Ayarları */
+/* Genel Stil Ayarları ve Font Optimizasyonu */
 body, html {
     height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-image: url('images/background.jpg');
     background-size: cover;
+    background-position: center;
 }
 
-/* Ana Menü Stili */
-#mainMenu {
+/* Ana Menü ve Oyun Sonucu Sütunu Stili */
+#mainMenu, #result-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -16,33 +17,41 @@ body, html {
     text-align: center;
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     max-width: 400px;
-    width: 100%;
+    width: 90%;
+    transition: transform 0.3s ease;
+}
+
+#mainMenu:hover, #result-container:hover {
+    transform: translate(-50%, -50%) scale(1.02);
 }
 
 /* Başlık Stilleri */
 h1, h2 {
     color: #4CAF50;
+    margin: 0.5em 0;
 }
 
-/* Menü ve Cevap Butonları */
-.menuButton, .answerButton {
-    display: block;
-    width: calc(100% - 40px);
-    margin: 10px auto;
-    padding: 10px 20px;
-    background-color: #3fc13f;
-    color: white;
+/* Buton Stilleri */
+.button, .answerButton, .menuButton {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 30px;
+    background-color: #f0f0f0;
+    color: #333;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
 }
 
-.menuButton:hover, .answerButton:hover {
+.button:hover, .answerButton:hover, .menuButton:hover {
     background-color: #367c39;
+    color: #fff;
 }
 
 /* Geri Bildirim */
@@ -59,16 +68,8 @@ h1, h2 {
     padding: 10px 20px;
 }
 
-
-
-/* Geri Sayım Çemberi */
-#countdown-circle {
-    transform: rotate(0deg);
-    margin-right: 10px;
-}
-
-/* Geri Sayım Metni */
-#countdown-text {
+/* Geri Sayım Çemberi ve Metni */
+#countdown-circle, #countdown-text {
     transform: rotate(0deg);
     font-weight: bold;
 }
@@ -76,39 +77,7 @@ h1, h2 {
 /* Arkadaşına Sor Butonu Hover */
 #ask-friend:hover {
     background-color: #FFDF00;
-    border: 2px solid #FFDF00;
-}
-
-/* Doğru Cevap Stili */
-.answerButton.correct {
-    background-color: #4CAF50;
-}
-
-/* Yanlış Cevap Stili */
-.answerButton.wrong {
-    background-color: #FF5733;
-}
-
-/* Hover Stilleri */
-.answerButton:hover {
-    background-color: #367c39;
-}
-
-.answerButton.correct:hover {
-    background-color: #4CAF50;
-}
-
-.answerButton.wrong:hover {
-    background-color: #FF5733;
-}
-
-/* Geri Bildirim Stilleri */
-.feedback.correct {
-    color: #4CAF50;
-}
-
-.feedback.wrong {
-    color: #FF5733;
+    color: #333;
 }
 
 /* Bilgi Sütunu Tasarımı */
@@ -125,7 +94,75 @@ h1, h2 {
     text-align: center;
 }
 
-/* Zamanlayıcıyı ortalamak için */
-#countdown-container {
-    margin-top: 20px; /* Zamanlayıcıyı bilgi sütununun içinde biraz aşağı kaydırın */
+/* Responsive Tasarım */
+@media only screen and (max-width: 600px) {
+    #mainMenu, #result-container, #info-column {
+        max-width: 90%;
+        width: auto;
+    }
+
+    .button, .answerButton, .menuButton {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    #feedback, #countdown-text {
+        font-size: 14px;
+    }
+}
+
+/* Animasyonlar */
+@keyframes finalCountdownAnimation {
+    0%, 100% { font-size: 20px; color: #333; }
+    50% { font-size: 24px; color: #FF5733; }
+}
+
+@keyframes blinkAnimation {
+    0%, 100% { stroke: #FF5733; }
+    50% { stroke: #FFC0CB; }
+}
+
+.final-countdown-text {
+    animation: finalCountdownAnimation 1s infinite;
+}
+
+.final-countdown-circle {
+    animation: blinkAnimation 1s infinite;
+}
+/* Doğru ve Yanlış Cevap Stilleri */
+.correct {
+    background-color: #4CAF50 !important; /* Yeşil */
+    color: white !important;
+}
+
+.wrong {
+    background-color: #f44336 !important; /* Kırmızı */
+    color: white !important;
+}
+.container {
+    width: 90%;
+    margin: auto;
+    max-width: 1200px; /* İçeriğin çok geniş ekranlarda aşırı genişlemesini önler */
+}
+@media only screen and (max-width: 600px) {
+    .menuButton {
+        padding: 12px 24px; /* Mobil cihazlarda buton boyutunu artır */
+    }
+    h1 {
+        font-size: 20px; /* Başlık boyutunu azalt */
+    }
+}
+.button {
+    min-width: 48px; /* Minimum dokunma alanı */
+    min-height: 48px; /* Minimum dokunma alanı */
+    margin: 12px; /* Butonlar arası boşluk */
+}
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* İçerikleri yatay olarak ortala */
 }

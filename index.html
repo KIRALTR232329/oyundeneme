@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oyunun Adı</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> <!-- CSS dosyanızın adı -->
 </head>
 <body>
-    <div id="mainMenu">
-        <h1>Hoş Geldiniz!</h1>
-        <button class="menuButton" id="start-game">Oyuna Başla</button>
-        <!-- Soru ve şıklar burada oynanır -->
-        <div id="feedback" style="margin-top: 20px;"></div>
-        <!-- Sonraki Soru düğmesi başlangıçta görülebilecek -->
-        <button id="next-question" class="menuButton" style="display: none; float: right;">Sonraki Soru</button>
-        <div id="question-container"></div>
-    </div>
-    <!-- Bilgi sütunu -->
-    <div id="info-column" style="display: none;">
-        <h2>Puan: <span id="player-score">0</span></h2>
-        <!-- Geri Sayım -->
-        <div id="countdown-container">
-            <svg id="countdown-circle" width="100" height="100" viewBox="0 0 100 100">
-                <circle r="45" cx="50" cy="50" fill="none" stroke="#4CAF50" stroke-width="4" stroke-dasharray="283" stroke-dashoffset="0"></circle>
-                <text id="countdown-text" x="50" y="55" text-anchor="middle" fill="#333" font-size="20px">30</text>
-            </svg>
+    <div id="container">
+        <div id="mainMenu">
+            <h1>Hoş Geldiniz!</h1>
+            <button class="menuButton" id="start-game">Oyuna Başla</button>
+            <div id="feedback" style="margin-top: 20px;"></div>
+            <button id="next-question" class="menuButton" style="display: none; float: right;">Sonraki Soru</button>
+            <div id="question-container"></div>
         </div>
-        <!-- Arkadaşına Sor Butonu -->
-        <button id="ask-friend" class="menuButton" onclick="extendTime()">Arkadaşına Sor</button>
+        <div id="info-column" style="display: none;">
+            <h2>Puan: <span id="player-score">0</span></h2>
+            <div id="countdown-container">
+                <svg id="countdown-circle" width="100" height="100" viewBox="0 0 100 100">
+                    <circle r="45" cx="50" cy="50" fill="none" stroke="#4CAF50" stroke-width="4" stroke-dasharray="283" stroke-dashoffset="0"></circle>
+                    <text id="countdown-text" x="50" y="55" text-anchor="middle" fill="#333" font-size="20px">30</text>
+                </svg>
+            </div>
+            <button id="ask-friend" class="menuButton" onclick="extendTime()">Arkadaşına Sor</button>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <!-- Oyun Sonucu Sütunu -->
+    <div id="result-container" style="display: none; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,255,255,0.9); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 90%; max-width: 400px;">
+        <h2 id="result-message">Oyun Bitti!</h2>
+        <p id="score-message">Puanınız: <span id="final-score">0</span></p>
+        <button id="restart-game" class="menuButton" onclick="startGame()">Baştan Başla</button>
+        <button id="go-home" class="menuButton">Ana Sayfaya Dön</button>
+    </div>
+    <script src="script.js"></script> <!-- JavaScript dosyanızın adı -->
 </body>
 </html>
